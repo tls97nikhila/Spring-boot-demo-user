@@ -1,9 +1,9 @@
 package com.stackroute.userservice.contoller;
 
 import com.stackroute.userservice.domain.User;
+import com.stackroute.userservice.exception.UserAlreadyExistsException;
 import com.stackroute.userservice.service.UserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +25,9 @@ public class UserController {
            userService.saveUser(user);
            responseEntity= new ResponseEntity("Successfully created", HttpStatus.CREATED);
 
-       }catch (Exception ex){
+       }catch (UserAlreadyExistsException ex){
            responseEntity= new ResponseEntity<String>(ex.getMessage() , HttpStatus.CONFLICT );
+           ex.printStackTrace();
        }
        return responseEntity;
     }
